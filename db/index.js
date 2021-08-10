@@ -1,5 +1,4 @@
 const { Client, Pool  } = require('pg');
-// const queries = require('queries');
 
 const pool = new Pool({
   user: 'camboucher',

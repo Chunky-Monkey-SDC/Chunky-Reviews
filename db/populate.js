@@ -1,4 +1,4 @@
-var db = require('./connection.js');
+var db = require('../db');
 
 //this file is used to create the initial tables in the database with the intended schema
 

@@ -1,3 +1,3 @@
-const db = require('./connection.js');
+const db = require('../db');
 
 

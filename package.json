@@ -1,0 +1,25 @@
+{
+  "name": "chunky-reviews",
+  "version": "1.0.0",
+  "description": "CRUD REST API using PostgreSQL Node.js and Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chunky-Monkey-SDC/Chunky-Reviews.git"
+  },
+  "author": "Cam Boucher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chunky-Monkey-SDC/Chunky-Reviews/issues"
+  },
+  "homepage": "https://github.com/Chunky-Monkey-SDC/Chunky-Reviews#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "pg": "^8.7.1"
+  }
+}

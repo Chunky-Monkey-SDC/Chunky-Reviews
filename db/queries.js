@@ -11,7 +11,7 @@ module.exports = {
   getPhotos: (id)
 
   getMetadata (id, callback) => {
-    db.query('SELECT SUM(rating) from reviews WHERE ')
+    db.query('SELECT SUM(rating) FROM reviews WHERE ')
     //need to get average rating, total recommendations, and characteristics (separate query);
 
   },

@@ -5,7 +5,12 @@ const getReviewData = () => {
   .then((res) => console.log(res.rows));
 }
 
-getReviewData();
+const getMetadata = () => {
+  db.query('SELECT rating, COUNT(recommend) FROM reviews WHERE product = 1;')
+  .then((res) => console.log(res))
+}
+// getReviewData();
+getMetadata();
 
 // sample data returned
 // rows: [

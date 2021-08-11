@@ -1,7 +1,9 @@
 const app = require('./index.js');
 const db = require('./db');
+const { getReviews, getMetadata, addReview, markHelpful, report } = require('./db/queries')
 
 app.get('/reviews', (req, res) => {
+  getReviews(id)
   res.send('Getting reviews!');
   //
 });
@@ -11,20 +13,21 @@ app.get('/reviews/meta', (req, res) => {
 });
 
 app.post('/reviews', (req, res) => {
+  db.query('')
   res.send('Created');
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
   const { id } = req.params;
-  db.query(`UPDATE reviews SET reported = true WHERE id = ${id}`)
+  markHelpful(id);
   .then((res) => { res.send('Review marked as helpful') };
-  res.send('Review marked as helpful');
+  .catch((err) => console.log(err));
 });
 
 app.put('/reviews/:review_id/reported', (req, res) => {
   const { id } = req.params;
   //function that sends query to db to increment helpful 1
-  db.query(`UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = ${id}`)
-  .then((res) => { res.send('Review marked as helpful') };
+  report(id);
+  .then((res) => { res.send('Review reported') };
 });
 

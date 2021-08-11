@@ -1,6 +1,7 @@
 const db = require('../db');
 
 //the first four statements copy CSV data into the tables. the file paths may need to be altered
+//the last statement adds the characteristic name to the characteristics table from the raw_chars table
 
 const etlProcess = () => {
   db.query(`copy reviews(id, product, rating, date, summary, body, recommend, reported, name, email, response, helpfulness)
@@ -22,12 +23,11 @@ const etlProcess = () => {
       DELIMITER ',' CSV HEADER;`);
   })
   .then((res) => {
-    //this last statement adds the characteristic name to the characteristics table from the raw_chars table
     db.query(`UPDATE characteristics SET name =
       (SELECT name FROM raw_chars
       WHERE characteristics.characteristic_id = raw_chars.id);`);
   })
   .catch((err) => console.log(err));
+};
 
-
-
+etlProcess();

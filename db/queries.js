@@ -1,20 +1,18 @@
 const db = require('../db');
 
-;
-
-
 module.exports = {
 
   getReviews: (id, callback) => {
-    db.query(`SELECT * FROM reviews WHERE id = ${id}`)
-    .then((res) => callback(res));
+    db.query(`SELECT id, rating, date, summay, body, name, recommend, response, helpfulness FROM reviews WHERE product = ${id}`)
+    .then((res) => callback(res.rows));
     .catch((err) => console.log(err));
   },
 
+  getPhotos: (id)
+
   getMetadata (id, callback) => {
-    getReviews(id, (res) => {
-      //need to get average rating, total recommendations, and characteristics (separate query);
-    })
+    db.query('SELECT SUM(rating) from reviews WHERE ')
+    //need to get average rating, total recommendations, and characteristics (separate query);
 
   },
 

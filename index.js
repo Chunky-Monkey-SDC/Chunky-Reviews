@@ -30,8 +30,8 @@ app.get('/reviews', (req, res) => {
 
 app.get('/reviews/meta', (req, res) => {
   const { product_id } = req.query
-  async function getMetadata(product) {
-    const responseObj = await routes.getMetadata(product);
+  async function getMetadata(product_id) {
+    const responseObj = await routes.getMetadata(product_id);
     res.send(responseObj);
   }
   getMetadata(product_id);
@@ -39,20 +39,20 @@ app.get('/reviews/meta', (req, res) => {
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
   const { review_id } = req.params;
-  async function markHelpful(id) {
-    await routes.markHelpful(id)
+  async function markHelpful(review_id) {
+    await routes.markHelpful(review_id)
     res.send('Review marked as helpful')
   }
-  markHelpful(id);
+  markHelpful(review_id);
 });
 
 app.put('/reviews/:review_id/reported', (req, res) => {
   const { review_id } = req.params;
-  async function reportReview(id) {
-    await routes.report(id)
+  async function reportReview(review_id) {
+    await routes.report(review_id)
     res.send('Review reported')
   }
-  reportReview(id);
+  reportReview(review_id);
 });
 
 

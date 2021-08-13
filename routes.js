@@ -1,6 +1,6 @@
 const app = require('./index.js');
 const db = require('./db');
-const { reviewsQuery, getMetadata, photosQuery, addReview, helpfulQuery, reportQuery } = require('./db/queries')
+const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReview, helpfulQuery, reportQuery } = require('./db/queries')
 
 module.exports = {
   getReviews: (response) => {
@@ -34,11 +34,20 @@ module.exports = {
 
   getMetadata: (product) => {
     async function generateResponse(product) {
-      var responseObj = {}
+      var responseObj = {
+        product_id: product,
+        ratings: {},
+        recommend: {},
+        characteristics: {},
+      };
       for (var i = 1; i <= 5; i ++) {
-        const data = await db.query(`SELECT COUNT(rating) FROM reviews WHERE rating = ${i}`);
-        responseObj[i] = data.rows[0].count;
+        const ratingData = await db.query(ratingQuery(product, i));
+        responseObj.ratings[i] = ratingData.rows[0].count;
       }
+      const totalRecommended = await db.query(recommendQuery(product, true));
+      responseObj.recommend[true] = totalRecommended.rows[0].count;
+      // responseObj.recommend[false] = responseObj.recommend[true] -
+        // Object.values(responseObj.ratings).reduce()
       return responseObj;
     }
     return generateResponse(product);

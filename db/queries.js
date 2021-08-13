@@ -2,12 +2,21 @@ const db = require('../db');
 
 module.exports = {
 
-  reviewsQuery: (id) => {
-    return `SELECT id, rating, date, summary, body, name, recommend, response, helpfulness FROM reviews WHERE product = ${id};`
+  reviewsQuery: (product) => {
+    return `SELECT id, rating, date, summary, body, name, recommend, response, helpfulness
+      FROM reviews WHERE product = ${product};`
   },
 
-  photosQuery: (id) => {
-    return `SELECT id, url FROM photos WHERE photos.review_id = ${id};`
+  photosQuery: (review_id) => {
+    return `SELECT id, url FROM photos WHERE photos.review_id = ${review_id};`
+  },
+
+  ratingQuery: (product, rating) => {
+    return `SELECT COUNT(rating) FROM reviews WHERE product = ${product} AND rating = ${rating};`
+  },
+
+  recommendQuery: (product, bool) => {
+    return `SELECT COUNT(recommend) FROM reviews WHERE product = ${product} AND recommend = ${bool};`
   },
 
   // getMetadata: (id, callback) => {

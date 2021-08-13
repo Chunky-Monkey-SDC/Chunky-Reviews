@@ -1,17 +1,39 @@
 const db = require('./db');
-const routes =
+const axios = require('axios');
+const routes = require('./routes');
 
 const getReviewData = () => {
   db.query('SELECT * FROM reviews WHERE id = 1 OR id = 2;')
   .then((res) => console.log(res.rows));
 }
 
-const getMetadata = () => {
-  db.query('SELECT rating, COUNT(recommend) FROM reviews WHERE product = 1;')
-  .then((res) => console.log(res))
+const postReview = () => {
+  axios.post(`localhost:6969/reviews`, {
+    product_id: 1,
+    rating: 3,
+    summary: 'test review',
+    body: 'this is the body for my test review',
+    recommend: true,
+    name: 'cam',
+    email: 'camboucher28@gmail.com',
+    photos: [],
+    date: Date.now().toString(),
+    characteristics: {
+      1: 1,
+      2: 1,
+      3: 1,
+      4: 1
+    }
+  })
 }
+
+
+// const getMetadata = () => {
+//   db.query('SELECT rating, COUNT(recommend) FROM reviews WHERE product = 1;')
+//   .then((res) => console.log(res))
+// }
 // getReviewData();
-getMetadata();
+postReview();
 
 // sample data returned
 // rows: [

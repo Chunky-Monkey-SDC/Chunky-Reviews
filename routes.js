@@ -1,6 +1,6 @@
 const app = require('./index.js');
 const db = require('./db');
-const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReview, helpfulQuery, reportQuery } = require('./db/queries')
+const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReviewQuery, helpfulQuery, reportQuery } = require('./db/queries')
 
 module.exports = {
   getReviews: (response) => {
@@ -46,11 +46,17 @@ module.exports = {
       }
       const totalRecommended = await db.query(recommendQuery(product, true));
       responseObj.recommend[true] = totalRecommended.rows[0].count;
-      // responseObj.recommend[false] = responseObj.recommend[true] -
-        // Object.values(responseObj.ratings).reduce()
+      responseObj.recommend[false] = Object.values(responseObj.ratings).reduce((accumulator, value) => {
+          return Number(accumulator) + Number(value);
+        }) - responseObj.recommend[true];
+      // const characteristics = await db.query(characteristicsQuery(product));
       return responseObj;
     }
     return generateResponse(product);
+  },
+
+  addReview: (newReview) => {
+    db.query(addReviewQuery(newReview))
   },
 
   markHelpful: (id) => {
@@ -61,9 +67,4 @@ module.exports = {
     db.query(reportQuery(id));
   }
 }
-
-// app.post('/reviews', (req, res) => {
-//   db.query('')
-//   res.send('Created');
-// });
 

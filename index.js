@@ -37,13 +37,23 @@ app.get('/reviews/meta', (req, res) => {
   getMetadata(product_id);
 });
 
+app.post('/reviews', (req, res) => {
+  const newReview = req.query;
+  async function postReview(review) {
+    await routes.addReview(review);
+    res.send('Created');
+  }
+  postReview(newReview);
+
+});
+
 app.put('/reviews/:review_id/helpful', (req, res) => {
   const { review_id } = req.params;
   async function markHelpful(review_id) {
     await routes.markHelpful(review_id)
     res.send('Review marked as helpful')
   }
-  markHelpful(review_id);
+  markHelpful(review_id)
 });
 
 app.put('/reviews/:review_id/reported', (req, res) => {

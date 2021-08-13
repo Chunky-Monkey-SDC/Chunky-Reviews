@@ -1,4 +1,5 @@
 const db = require('./db');
+const routes =
 
 const getReviewData = () => {
   db.query('SELECT * FROM reviews WHERE id = 1 OR id = 2;')

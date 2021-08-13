@@ -2,35 +2,33 @@ const db = require('../db');
 
 module.exports = {
 
-  getReviews: (id, callback) => {
-    db.query(`SELECT id, rating, date, summay, body, name, recommend, response, helpfulness FROM reviews WHERE product = ${id}`)
-    .then((res) => callback(res.rows));
-    .catch((err) => console.log(err));
+  reviewsQuery: (id) => {
+    return `SELECT id, rating, date, summary, body, name, recommend, response, helpfulness FROM reviews WHERE product = ${id};`
   },
 
-  getPhotos: (id)
-
-  getMetadata (id, callback) => {
-    db.query('SELECT SUM(rating) FROM reviews WHERE ')
-    //need to get average rating, total recommendations, and characteristics (separate query);
-
+  photosQuery: (id) => {
+    return `SELECT id, url FROM photos WHERE photos.review_id = ${id};`
   },
+
+  // getMetadata: (id, callback) => {
+  //   const metaData = {};
+  //   db.query(`SELECT rating, COUNT(recommend) FROM reviews WHERE product = ${id}`)
+  //   .then((res))
+  //   //need to get average rating, total recommendations, and characteristics (separate query);
+
+  // },
 
   addReview: (review) => {
-    const {product_id, rating, date body, summary, body, recommend, name, email, photos, characteristics } = review;
-    db.query(`INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
-      VALUES( ${product_id}, ${rating}, ${Date.now().toString()}, ${body}, ${summary}, ${name}, ${email}, 0`)
-    .catch((err) => console.log(err))
+    const {product_id, rating, date, summary, body, recommend, name, email, photos, characteristics } = review;
+    return `INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
+      VALUES( ${product_id}, ${rating}, ${Date.now().toString()}, ${body}, ${summary}, ${name}, ${email}, 0;`
   },
 
-  report: (id) => {
-    db.query(`UPDATE reviews SET reported = true WHERE id = ${id}`)
-    .catch((err) => console.log(err))
+  reportQuery: (id) => {
+    return `UPDATE reviews SET reported = true WHERE id = ${id};`
   },
 
-  markHelpful: (id) => {
-    db.query(`UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = ${id}`)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err))
+  helpfulQuery: (id) => {
+    return `UPDATE reviews SET helpfulness = helpfulness + 1 WHERE id = ${id};`
   }
 };

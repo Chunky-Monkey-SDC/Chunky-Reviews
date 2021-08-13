@@ -33,8 +33,10 @@ module.exports = {
 
   addReviewQuery: (review) => {
     const {product_id, rating, date, summary, body, recommend, name, email, photos, characteristics } = review;
+    // console.log(`INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
+    //   VALUES(${product_id}, ${rating}, '${Date.now()}', ${summary}, ${body}, ${recommend}, ${name}, ${email}, 0);`);
     return `INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
-      VALUES(${product_id}, ${rating}, ${Date.now().toString()}, ${summary}, ${body}, ${recommend}, ${name}, ${email}, 0;`
+      VALUES(${product_id}, ${rating}, '${Date.now()}', ${summary}, ${body}, ${recommend}, ${name}, ${email}, 0);`;
   },
 
   reportQuery: (id) => {

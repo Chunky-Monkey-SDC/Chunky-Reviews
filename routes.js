@@ -57,6 +57,8 @@ module.exports = {
 
   addReview: (newReview) => {
     db.query(addReviewQuery(newReview))
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err))
   },
 
   markHelpful: (id) => {

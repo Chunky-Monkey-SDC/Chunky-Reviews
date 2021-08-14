@@ -4,7 +4,6 @@ const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReviewQuery, 
 
 module.exports = {
   getReviews: (response) => {
-    var reviewIds = [];
     return db.query(reviewsQuery(response.product))
     .then((data) => {
       data.rows.map((row) => {
@@ -25,11 +24,6 @@ module.exports = {
       })
       return response;
     })
-    // .then((response) => {
-    //   return reviewIds.map((id, i) => {
-    //     db.query(photosQuery(id))
-    //     .then((data) => {
-    //       response.results[i].photos.push(data)
   },
 
   getMetadata: (product) => {

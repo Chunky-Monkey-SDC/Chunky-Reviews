@@ -3,12 +3,12 @@ const db = require('../db');
 module.exports = {
 
   reviewsQuery: (product) => {
-    return `SELECT id, rating, date, summary, body, name, recommend, response, helpfulness
+    return `SELECT id, rating, date, summary, body, name, recommend, respqonse, helpfulness
       FROM reviews WHERE product = ${product};`
   },
 
-  photosQuery: (review_id) => {
-    return `SELECT id, url FROM photos WHERE photos.review_id = ${review_id};`
+  reviewsQueryInnerJoin: (review_id) => {
+    return `SELECT reviews.id, rating, date, summary, body, name, recommend, response, helpfulness, photos.id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = 2;`
   },
 
   ratingQuery: (product, rating) => {

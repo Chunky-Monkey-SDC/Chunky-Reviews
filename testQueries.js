@@ -25,15 +25,22 @@ const postReview = () => {
       4: 1
     }
   })
+};
+
+async function innerJoin(id) {
+  const data = await db.query(`SELECT reviews.id, rating, date, summary, body, name, recommend, response, helpfulness, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${id};`)
+  console.log(`Query for product_id = ${id}`, data.rows);
 }
 
+innerJoin(2);
+innerJoin(1);
 
 // const getMetadata = () => {
 //   db.query('SELECT rating, COUNT(recommend) FROM reviews WHERE product = 1;')
 //   .then((res) => console.log(res))
 // }
 // getReviewData();
-postReview();
+// postReview();
 
 // sample data returned
 // rows: [

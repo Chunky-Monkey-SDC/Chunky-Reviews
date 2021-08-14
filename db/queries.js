@@ -3,33 +3,29 @@ const db = require('../db');
 module.exports = {
 
   reviewsQuery: (product) => {
-    return `SELECT id, rating, date, summary, body, name, recommend, respqonse, helpfulness
+    return `SELECT id, rating, date, summary, body, name, recommend, response, helpfulness
       FROM reviews WHERE product = ${product};`
   },
 
-  reviewsQueryInnerJoin: (review_id) => {
-    return `SELECT reviews.id, rating, date, summary, body, name, recommend, response, helpfulness, photos.id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = 2;`
+  photosQuery: (product) => {
+    return `SELECT reviews.id, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${product};`
   },
 
-  ratingQuery: (product, rating) => {
-    return `SELECT COUNT(rating) FROM reviews WHERE product = ${product} AND rating = ${rating};`
+  ratingQuery: (product) => {
+    return `SELECT rating FROM reviews WHERE product = ${product};`
   },
 
   recommendQuery: (product, bool) => {
     return `SELECT COUNT(recommend) FROM reviews WHERE product = ${product} AND recommend = ${bool};`
   },
 
-  // characteristicsQuery: (product) => {
-  //   return `SELECT `
-  // },
+  characteristicsQuery: (product) => {
+    return `SELECT characteristic_id, characteristics.name FROM characteristics INNER JOIN reviews ON review_id = reviews.id WHERE product = ${product};`
+  },
 
-  // getMetadata: (id, callback) => {
-  //   const metaData = {};
-  //   db.query(`SELECT rating, COUNT(recommend) FROM reviews WHERE product = ${id}`)
-  //   .then((res))
-  //   //need to get ratings, total recommendations, and characteristics (separate query);
-
-  // },
+  averageValueQuery: (id) => {
+    return `SELECT AVG(value) FROM characteristics WHERE characteristic_id = ${id};`
+  },
 
   addReviewQuery: (review) => {
     const {product_id, rating, date, summary, body, recommend, name, email, photos, characteristics } = review;

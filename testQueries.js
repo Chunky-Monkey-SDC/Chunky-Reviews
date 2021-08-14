@@ -28,12 +28,13 @@ const postReview = () => {
 };
 
 async function innerJoin(id) {
-  const data = await db.query(`SELECT reviews.id, rating, date, summary, body, name, recommend, response, helpfulness, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${id};`)
-  console.log(`Query for product_id = ${id}`, data.rows);
+  const photos = await db.query(`SELECT reviews.id, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${id};`)
+  const reviews = await db.query(`SELECT * FROM reviews WHERE product = ${id};`)
+  console.log(`Query for product_id = ${id}`, reviews.rows, photos.rows);
 }
 
-innerJoin(2);
-innerJoin(1);
+// innerJoin(2);
+// innerJoin(1);
 
 // const getMetadata = () => {
 //   db.query('SELECT rating, COUNT(recommend) FROM reviews WHERE product = 1;')

@@ -1,6 +1,6 @@
 const app = require('./index.js');
 const db = require('./db');
-const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReviewQuery, helpfulQuery, reportQuery, characteristicsQuery, averageValueQuery } = require('./db/queries')
+const { reviewsQuery, ratingQuery, recommendQuery, photosQuery, addReviewQuery, helpfulQuery, reportQuery, characteristicsQuery } = require('./db/queries')
 
 module.exports = {
   getReviews: async function(reviewsObj) {
@@ -22,7 +22,6 @@ module.exports = {
       };
       reviewsObj.results.push(individualReview);
     });
-    console.log(photos.rows)
     photos.rows.map((row) => {
       console.log(row.id);
       for (var i = 0; i < reviewsObj.results.length; i++) {
@@ -40,33 +39,72 @@ module.exports = {
   getMetadata: async function(product) {
     var responseObj = {
       product_id: product,
-      ratings: {},
+      ratings: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0
+      },
       recommend: {},
       characteristics: {},
     };
 
-    for (var i = 1; i <= 5; i ++) {
-      const ratingData = await db.query(ratingQuery(product, i));
-      responseObj.ratings[i] = ratingData.rows[0].count;
+    return Promise.all([db.query(ratingQuery(product)), db.query(recommendQuery(product)), db.query(characteristicsQuery(product))])
+    .then((results) => {
+      for (var i = 0; i < results[0].rows.length; i++) {
+        responseObj.ratings[results[0].rows[i].rating] ++;
+      }
+      responseObj.recommend[true] = results[1].rows[0].count;
+      responseObj.recommend[false] = Object.values(responseObj.ratings).reduce((accumulator, value) => {
+        return Number(accumulator) + Number(value);
+        }) - responseObj.recommend[true];
+      results[2].rows.map((characteristic) => {
+        if (!responseObj.characteristics[characteristic.name]) {
+          const averageValue = [0, 0]
+          for (var i = 0; i < results[2].rows.length; i ++) {
+            if (characteristic.characteristic_id === results[2].rows[i].characteristic_id) {
+              averageValue[0] ++ ;
+              averageValue[1] += results[2].rows[i].value;
+            }
+          }
+          responseObj.characteristics[characteristic.name] = {
+            id: characteristic.characteristic_id,
+            value: (averageValue[1] / averageValue[0])
+        }}
+      })
+      return responseObj;
+    })
+    // .then((responseObj) => {
+    //   for (var i = 0; i < responseObj.characteristics.length)
+    // })
 
-    }
+    // const ratingData = await db.query(ratingQuery(product));
+    // for (var i = 0; i < ratingData.rows.length; i ++) {
+    //   responseObj.ratings[ratingData.rows[i].rating] ++;
+    // }
 
-    const totalRecommended = await db.query(recommendQuery(product, true));
-    responseObj.recommend[true] = totalRecommended.rows[0].count;
-    responseObj.recommend[false] = Object.values(responseObj.ratings).reduce((accumulator, value) => {
-      return Number(accumulator) + Number(value);
-      }) - responseObj.recommend[true];
+    // const totalRecommended = await db.query(recommendQuery(product));
+    // responseObj.recommend[true] = totalRecommended.rows[0].count;
+    // responseObj.recommend[false] = Object.values(responseObj.ratings).reduce((accumulator, value) => {
+    //   return Number(accumulator) + Number(value);
+    //   }) - responseObj.recommend[true];
 
-    const characteristics = await db.query(characteristicsQuery(product));
-    responseObj.characteristics = characteristics.rows
-    // characteristics.rows.map(async function(row) {
-    //   const average = await db.query(averageValueQuery(row.characteristic_id))
-    //   responseObj.characteristics[row.name] = {
-    //     id: row.characteristic_id,
-    //     value: average.rows[0]
-    //   }
-      // console.log(responseObj.characteristics[row.name])
-    console.log(responseObj);
+    // async function getAverageValue(characteristic) {
+    //   const {characteristic_id, name} = characteristic
+    //   if (!responseObj.characteristics[name]) {
+    //     const average = await db.query(averageValueQuery(characteristic_id))
+    //     console.log(average.rows[0].avg)
+    //     console.log(name)
+    //     responseObj.characteristics[name] = {
+    //       id: characteristic_id,
+    //       // value: Number(average.rows[0].avg)
+    //     }
+    // }}
+    // const characteristics = await db.query(characteristicsQuery(product));
+    // characteristics.rows.map((row) => {
+    //   getAverageValue(row);
+    // });
     // return responseObj;
   },
 

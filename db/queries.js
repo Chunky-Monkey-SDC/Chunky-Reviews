@@ -15,22 +15,20 @@ module.exports = {
     return `SELECT rating FROM reviews WHERE product = ${product};`
   },
 
-  recommendQuery: (product, bool) => {
-    return `SELECT COUNT(recommend) FROM reviews WHERE product = ${product} AND recommend = ${bool};`
+  recommendQuery: (product) => {
+    return `SELECT COUNT(recommend) FROM reviews WHERE product = ${product} AND recommend = true;`
   },
 
   characteristicsQuery: (product) => {
-    return `SELECT characteristic_id, characteristics.name FROM characteristics INNER JOIN reviews ON review_id = reviews.id WHERE product = ${product};`
+    return `SELECT characteristic_id, characteristics.name, characteristics.value FROM characteristics INNER JOIN reviews ON review_id = reviews.id WHERE product = ${product};`
   },
 
-  averageValueQuery: (id) => {
-    return `SELECT AVG(value) FROM characteristics WHERE characteristic_id = ${id};`
-  },
+  // averageValueQuery: (id) => {
+  //   return `SELECT AVG(value) FROM characteristics WHERE characteristic_id = ${id};`
+  // },
 
   addReviewQuery: (review) => {
     const {product_id, rating, date, summary, body, recommend, name, email, photos, characteristics } = review;
-    // console.log(`INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
-    //   VALUES(${product_id}, ${rating}, '${Date.now()}', ${summary}, ${body}, ${recommend}, ${name}, ${email}, 0);`);
     return `INSERT INTO reviews (product, rating, date, summary, body, recommend, name, email, helpfulness)
       VALUES(${product_id}, ${rating}, '${Date.now()}', ${summary}, ${body}, ${recommend}, ${name}, ${email}, 0);`;
   },

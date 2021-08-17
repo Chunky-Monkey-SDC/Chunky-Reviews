@@ -1,17 +1,16 @@
 const db = require('./db');
 const axios = require('axios');
-const routes = require('./routes');
 
-const getReviewData = () => {
-  db.query('SELECT * FROM reviews WHERE id = 1 OR id = 2;')
-  .then((res) => console.log(res.rows));
-}
+// const getReviewData = () => {
+//   db.query('SELECT * FROM reviews WHERE id = 1 OR id = 2;')
+//   .then((res) => console.log(res.rows));
+// }
 
 const postReview = () => {
-  axios.post(`localhost:6969/reviews`, {
-    product_id: 1,
-    rating: 3,
-    summary: 'test review',
+  axios.post(`http://localhost:6969/reviews?product_id=1`, {
+    product_id: 1000011,
+    rating: 4,
+    summary: 'the final test post test review',
     body: 'this is the body for my test review',
     recommend: true,
     name: 'cam',
@@ -19,20 +18,23 @@ const postReview = () => {
     photos: [],
     date: Date.now().toString(),
     characteristics: {
-      1: 1,
-      2: 1,
-      3: 1,
-      4: 1
+      3347676: 3,
+      3347677: 3,
+      3347678: 3,
+      3347679: 3
     }
   })
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err))
 };
 
-async function innerJoin(id) {
-  const photos = await db.query(`SELECT reviews.id, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${id};`)
-  const reviews = await db.query(`SELECT * FROM reviews WHERE product = ${id};`)
-  console.log(`Query for product_id = ${id}`, reviews.rows, photos.rows);
-}
+// async function innerJoin(id) {
+//   const photos = await db.query(`SELECT reviews.id, photos.photo_id, photos.url FROM reviews INNER JOIN photos ON review_id = reviews.id WHERE product = ${id};`)
+//   const reviews = await db.query(`SELECT * FROM reviews WHERE product = ${id};`)
+//   console.log(`Query for product_id = ${id}`, reviews.rows, photos.rows);
+// }
 
+postReview();
 // innerJoin(2);
 // innerJoin(1);
 

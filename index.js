@@ -8,12 +8,14 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   console.log('request received');
 })
 
 app.get('/reviews', (req, res) => {
-  const { product_id, page = 1, count = 5 } = req.query
+  const { product_id, sort = 'helpful', count = 5, page = 1 } = req.query
   var response = {
     product: product_id,
     page: page,
@@ -21,11 +23,11 @@ app.get('/reviews', (req, res) => {
     results: [],
   };
 
-  async function generateResponse(data) {
-    const responseObj = await routes.getReviews(data)
+  async function generateResponse(data, sort) {
+    const responseObj = await routes.getReviews(data, sort)
     res.send(responseObj);
   }
-  generateResponse(response);
+  generateResponse(response, sort);
 });
 
 app.get('/reviews/meta', (req, res) => {
@@ -38,7 +40,8 @@ app.get('/reviews/meta', (req, res) => {
 });
 
 app.post('/reviews', (req, res) => {
-  const newReview = req.query;
+  const newReview = req.body;
+  console.log(req.body)
   async function postReview(review) {
     await routes.addReview(review);
     res.send('Created');

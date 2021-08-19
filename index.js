@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   console.log('request received');
+  res.send('request received');
 })
 
 app.get('/reviews', (req, res) => {
@@ -41,7 +42,6 @@ app.get('/reviews/meta', (req, res) => {
 
 app.post('/reviews', (req, res) => {
   const newReview = req.body;
-  console.log(req.body)
   async function postReview(review) {
     await routes.addReview(review);
     res.send('Created');
@@ -66,7 +66,12 @@ app.put('/reviews/:review_id/reported', (req, res) => {
     res.send('Review reported')
   }
   reportReview(review_id);
-});
+},
+
+app.get('/loaderio-a021896135270d4c988d3a617c8b0e29/', (req, res) => {
+  res.send('loaderio-a021896135270d4c988d3a617c8b0e29');
+})
+);
 
 
 

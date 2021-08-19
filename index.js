@@ -11,7 +11,7 @@ app.listen(port, () => {
 
 app.use(express.json());
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3030');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   next();
 });
 

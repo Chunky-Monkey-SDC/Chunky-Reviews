@@ -3,12 +3,17 @@ const routes = require('./routes');
 
 const app = express();
 const port = 6969;
+app.origin = '*';
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
 app.use(express.json());
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+  next();
+});
 
 app.get('/', (req, res) => {
   console.log('request received');

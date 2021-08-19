@@ -8,6 +8,7 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
+
 app.use(express.json());
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -54,7 +55,6 @@ app.post('/reviews', (req, res) => {
     res.send('Created');
   }
   postReview(newReview);
-
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
@@ -73,14 +73,11 @@ app.put('/reviews/:review_id/reported', (req, res) => {
     res.send('Review reported')
   }
   reportReview(review_id);
-},
+});
 
 app.get('/loaderio-a021896135270d4c988d3a617c8b0e29/', (req, res) => {
   res.send('loaderio-a021896135270d4c988d3a617c8b0e29');
 })
-);
-
-
 
 
 

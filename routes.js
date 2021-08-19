@@ -53,7 +53,6 @@ module.exports = {
       characteristics: {},
     };
     const data = await db.query(metaDataQuery(product));
-    console.log(data.rows.length)
     data.rows.map((row) => {
       var reviews = []
       if (reviews.indexOf(row.review_id === -1)) {

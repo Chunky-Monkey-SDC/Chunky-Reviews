@@ -75,8 +75,8 @@ app.put('/reviews/:review_id/reported', (req, res) => {
   reportReview(review_id);
 });
 
-app.get('/loaderio-daaf23e57abe1c0f895abab2474fa8e3/', (req, res) => {
-  res.send('loaderio-daaf23e57abe1c0f895abab2474fa8e3');
+app.get('/loaderio-98667d274fa8eac91164eb50b9ed6e79/', (req, res) => {
+  res.send('loaderio-98667d274fa8eac91164eb50b9ed6e79');
 })
 
 

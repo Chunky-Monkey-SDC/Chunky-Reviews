@@ -8,7 +8,6 @@ app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
 });
 
-
 app.use(express.json());
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
